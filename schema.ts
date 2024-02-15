@@ -44,7 +44,7 @@ const Category = [
   },
   {
     name: "Books and Media",
-    subcategories: ["Fiction", "Non-Fiction", "Children's Books", "Movies"],
+    subcategories: ["Fiction", "Non-Fiction", "Children's Books"],
   },
   {
     name: "Automotive",
@@ -140,7 +140,3 @@ const authorizationSchema = {
   userId: "string",
   role: "string",
 };
-
-// products api
-// - add
-// - filter
