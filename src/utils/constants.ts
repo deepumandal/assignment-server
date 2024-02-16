@@ -389,3 +389,8 @@ export const Brands = [
   TOMMY_HILFIGER,
   WAYFAIR,
 ];
+
+export const emailValidationRegex =
+  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+export const passwordValidationRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;

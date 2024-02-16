@@ -3,6 +3,7 @@ import { EnvProvider } from "./utils/EnvProvider";
 import { productsRoute } from "./routes/products";
 import cors from "cors";
 import connectToDB from "./database/db";
+import { userRoute } from "./routes/user";
 // app setup
 const app = express();
 app.use(express.json());
@@ -19,9 +20,10 @@ app.get("/", (req: Request, res: Response) => {
 
 // routes
 app.use("/products", productsRoute);
+app.use("/user", userRoute);
 
 // server listening
-console.log("Server starting...")
+console.log("Server starting...");
 connectToDB().then(() => {
   app.listen(EnvProvider.PORT, () => {
     console.log(
