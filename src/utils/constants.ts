@@ -129,7 +129,7 @@ export const WEST_ELM = "West Elm";
 // export const CRATE_AND_BARREL = "Crate and Barrel";
 // export const POTTERY_BARN = "Pottery Barn";
 export const ANTHROPOLOGIE = "Anthropologie";
-// export const HOME_GOODS = "HomeGoods";
+export const HOME_GOODS = "HomeGoods";
 
 // Appliances
 export const LG = "LG Appliances";

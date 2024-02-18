@@ -16,16 +16,16 @@
 // day-2
 //            - filter based on category design
 //            - CRUD Operation for Products { comments }
-//            - login signup
+//             - login signup
 //            - entire backend
-//            - fronend set up
-//            - home page
+//            - fronend set up , Redux
 //            - browse page
 
 // day-3
 //            - search and filter products
 //            - cart and checkout page
 //            - orders page
+//            - added few parameter on filter api
 
 // day-4
 //            - backend code optimisation
