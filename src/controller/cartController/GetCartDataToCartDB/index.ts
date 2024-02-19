@@ -4,14 +4,24 @@ import cartModel from "../../../modals/cartModal";
 
 const GetCartDataToCartDB = async (req: Request, res: Response) => {
   try {
-    const responseData = await cartModel.find();
+    const { userId }: { userId: string } = req.body;
+
+    if (!userId) {
+      return ServerResponse.sendResponse({
+        message: " orderakdff ",
+        res,
+        status: false,
+        statusCode: 400,
+      });
+    }
+    const responseData = await cartModel.findOne({ userId });
 
     return ServerResponse.sendResponse({
       message: "Added to cart successfully",
       res,
       status: true,
       statusCode: 200,
-      data: responseData,
+      data: responseData?.userData || [],
     });
   } catch (error) {
     console.log(error);

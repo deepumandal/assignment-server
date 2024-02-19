@@ -2,10 +2,12 @@ import { Request, Response } from "express";
 import { ServerResponse } from "../../utils/ResponseSchema";
 import {
   emailValidationRegex,
+  expiry,
   passwordValidationRegex,
 } from "../../utils/constants";
 import userModel from "../../modals/user";
-
+import jwt from "jsonwebtoken";
+import { EnvProvider } from "../../utils/EnvProvider";
 interface requestBodyI {
   email: string;
   password: string;
@@ -24,7 +26,7 @@ const LoginToUserDB = async (req: Request, res: Response) => {
       const UserDetails = await userModel.find({
         email,
       });
-      console.log("UserDetails", UserDetails)
+      console.log("UserDetails", UserDetails);
 
       if (!UserDetails.length) {
         return ServerResponse.sendResponse({
@@ -38,12 +40,27 @@ const LoginToUserDB = async (req: Request, res: Response) => {
           UserDetails[0].email === email &&
           UserDetails[0].password === password
         ) {
+          const token = jwt.sign(
+            {
+              email,
+              name: UserDetails[0].name,
+              userId: UserDetails[0]._id,
+            },
+            EnvProvider.TOKEN_SECRET,
+            { expiresIn: expiry }
+          );
+
           return ServerResponse.sendResponse({
             message: `Success`,
             res,
             status: true,
             statusCode: 200,
-            data: UserDetails,
+            data: {
+              email,
+              name: UserDetails[0].name,
+              token,
+              userId: UserDetails[0]._id,
+            },
           });
         } else if (UserDetails[0].password !== password) {
           return ServerResponse.sendResponse({

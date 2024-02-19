@@ -2,10 +2,13 @@ import { Request, Response } from "express";
 import { ServerResponse } from "../../utils/ResponseSchema";
 import {
   emailValidationRegex,
+  expiry,
   passwordValidationRegex,
 } from "../../utils/constants";
 import userModel from "../../modals/user";
 
+import jwt from "jsonwebtoken";
+import { EnvProvider } from "../../utils/EnvProvider";
 interface requestBodyI {
   email: string;
   password: string;
@@ -39,12 +42,28 @@ const SignupToUserDB = async (req: Request, res: Response) => {
           name,
         });
         await newEntry.save();
+
+        const token = jwt.sign(
+          {
+            name: newEntry.name,
+            email: newEntry.email,
+            userId: newEntry._id,
+          },
+          EnvProvider.TOKEN_SECRET,
+          { expiresIn: expiry }
+        );
+
         return ServerResponse.sendResponse({
           message: `test`,
           res,
           status: true,
           statusCode: 200,
-          data: newEntry,
+          data: {
+            name: newEntry.name,
+            email: newEntry.email,
+            token: token,
+            userId: newEntry._id,
+          },
         });
       }
     }
