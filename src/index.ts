@@ -6,6 +6,8 @@ import connectToDB from "./database/db";
 import { userRoute } from "./routes/user";
 import { cartRoute } from "./routes/cart";
 import { orderRoute } from "./routes/order";
+import tokenVarification from "./middleware/tokenVarification";
+
 // app setup
 const app = express();
 app.use(express.json());
@@ -23,8 +25,9 @@ app.get("/", (req: Request, res: Response) => {
 // routes
 app.use("/products", productsRoute);
 app.use("/user", userRoute);
-app.use("/cart", cartRoute);
-app.use("/order", orderRoute);
+app.use("/cart", tokenVarification, cartRoute);
+app.use("/order", tokenVarification, orderRoute);
+
 
 // server listening
 console.log("Server starting...");

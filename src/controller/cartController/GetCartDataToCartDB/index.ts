@@ -8,7 +8,7 @@ const GetCartDataToCartDB = async (req: Request, res: Response) => {
 
     if (!userId) {
       return ServerResponse.sendResponse({
-        message: " orderakdff ",
+        message: "UserId not found",
         res,
         status: false,
         statusCode: 400,
