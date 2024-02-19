@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 import { EnvProvider } from "../utils/EnvProvider";
 
 const connectToDB = async (): Promise<void> => {
-  console.log("database conecting...");
-  const connectionUrl = EnvProvider.CONNECTION_URL
+  console.log("database connecting...");
+  const connectionUrl = EnvProvider.CONNECTION_URL;
 
   try {
     await mongoose.connect(connectionUrl);

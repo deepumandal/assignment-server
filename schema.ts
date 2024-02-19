@@ -40,20 +40,11 @@ const Category = [
   },
   {
     name: "Toys and Games",
-    subcategories: ["Action Figures", "Board Games", "Puzzles", "Outdoor Toys"],
+    subcategories: ["Action Figures", "Board Games", "Outdoor Toys"],
   },
   {
     name: "Books and Media",
     subcategories: ["Fiction", "Non-Fiction", "Children's Books"],
-  },
-  {
-    name: "Automotive",
-    subcategories: [
-      "Car Parts",
-      "Car Accessories",
-      "Tools & Equipment",
-      "Maintenance",
-    ],
   },
 ];
 
@@ -133,7 +124,7 @@ const authenticationSchema = {
   password: "string",
   token: "string",
   expiration: "string",
-  role : "user | guest"
+  role: "user | guest",
 };
 const authorizationSchema = {
   id: "string",

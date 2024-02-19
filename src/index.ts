@@ -4,6 +4,7 @@ import { productsRoute } from "./routes/products";
 import cors from "cors";
 import connectToDB from "./database/db";
 import { userRoute } from "./routes/user";
+import { cartRoute } from "./routes/cart";
 // app setup
 const app = express();
 app.use(express.json());
@@ -21,6 +22,7 @@ app.get("/", (req: Request, res: Response) => {
 // routes
 app.use("/products", productsRoute);
 app.use("/user", userRoute);
+app.use("/cart", cartRoute);
 
 // server listening
 console.log("Server starting...");

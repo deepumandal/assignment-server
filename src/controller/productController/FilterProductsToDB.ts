@@ -11,6 +11,9 @@ interface RequstBodyI {
   avgtype?: "gt" | "lte";
   name?: string;
   querry?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  // filter by price
 }
 
 const FilterProductsToDB = async (req: Request, res: Response) => {
@@ -23,6 +26,8 @@ const FilterProductsToDB = async (req: Request, res: Response) => {
       averageRating,
       name,
       querry,
+      maxPrice,
+      minPrice,
     }: RequstBodyI = req.body;
 
     const query: any = {};
@@ -42,6 +47,14 @@ const FilterProductsToDB = async (req: Request, res: Response) => {
 
     if (querry) {
       query.description = { $regex: querry, $options: "i" };
+    }
+
+    if (minPrice !== undefined) {
+      query.price = { ...query.price, $gte: minPrice };
+    }
+
+    if (maxPrice !== undefined) {
+      query.price = { ...query.price, $lte: maxPrice };
     }
 
     const result = await ProductModel.find(query);
