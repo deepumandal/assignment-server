@@ -59,8 +59,7 @@ const FilterProductsToDB = async (req: Request, res: Response) => {
       query.price = { ...query.price, $lte: maxPrice };
     }
 
-    const result = await ProductModel.find(query).limit(50);
-    console.log(result.length);
+    const result = await ProductModel.find(query).limit(20);
     return ServerResponse.sendResponse({
       message: "Data successfully Fetched",
       res,

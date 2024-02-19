@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { ServerResponse } from "../utils/ResponseSchema";
-import jwt, { VerifyErrors } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { EnvProvider } from "../utils/EnvProvider";
 
 const tokenVerification = (req: Request, res: Response, next: NextFunction) => {
@@ -22,6 +22,7 @@ const tokenVerification = (req: Request, res: Response, next: NextFunction) => {
 
     next();
   } catch (error) {
+    console.log(error)
     return ServerResponse.sendResponse({
       message: "Unauthorized",
       res,
