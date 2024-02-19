@@ -7,5 +7,5 @@ orderRoute.get("/", (req: Request, res: Response) => {
   res.end("product route");
 });
 
-orderRoute.post("/setOrder", SetOrderDataToDB);
-orderRoute.get("/getOrder", GetOrderDataToDB);
+orderRoute.post("/placeOrder", SetOrderDataToDB);
+orderRoute.post("/getOrder", GetOrderDataToDB);

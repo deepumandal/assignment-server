@@ -1,25 +1,64 @@
 import { Request, Response } from "express";
 import { ServerResponse } from "../../utils/ResponseSchema";
-import orderModal, { OrderFields } from "../../modals/orderModal";
+import orderModal, {
+  OrderFields,
+  userOrderInterface,
+} from "../../modals/orderModal";
 
 const SetOrderDataToDB = async (req: Request, res: Response) => {
   try {
-    const requestBody: OrderFields[] = req.body;
+    const {
+      requestOrders,
+      userId,
+    }: {
+      userId: string;
+      requestOrders: userOrderInterface[];
+    } = req.body;
 
-    console.log("requestBody", requestBody);
-
-    // Check if requestBody exists and is an array
-    if (Array.isArray(requestBody) && requestBody.length > 0) {
-      const isValidRequestBody: boolean = validateRequestBody(requestBody);
+    if (Array.isArray(requestOrders) && requestOrders.length > 0) {
+      const isValidRequestBody: boolean = validateRequestBody(requestOrders);
 
       if (isValidRequestBody) {
-        const orderData = await orderModal.insertMany(requestBody);
+        // const orderData = await orderModal.insertMany(requestBody);
+
+        const isNotFirstTimeOrder = await orderModal.findOne({ userId });
+
+        if (isNotFirstTimeOrder) {
+          // console.log("requestBody", isNotFirstTimeOrder);
+
+          let i = 0;
+          while (i < requestOrders.length) {
+            await orderModal.findOneAndUpdate(
+              {
+                userId,
+              },
+              {
+                $push: {
+                  userData: {
+                    ...requestOrders[i],
+                  },
+                },
+              }
+            );
+            i++;
+          }
+        } else {
+          // first time order
+          const newEntry = await new orderModal({
+            userId,
+            userData: requestOrders,
+          });
+          await newEntry.save();
+        }
+
+        const orderData = await orderModal.findOne({ userId });
+
         return ServerResponse.sendResponse({
           message: "Order successfully",
           res,
           status: true,
           statusCode: 200,
-          data: orderData,
+          data: orderData?.userData,
         });
       } else {
         return ServerResponse.sendResponse({
@@ -45,7 +84,7 @@ const SetOrderDataToDB = async (req: Request, res: Response) => {
 
 export default SetOrderDataToDB;
 
-const validateRequestBody = (requestBody: OrderFields[]): boolean => {
+const validateRequestBody = (requestBody: userOrderInterface[]): boolean => {
   for (let i = 0; i < requestBody.length; i++) {
     if (
       !requestBody[i].productId ||

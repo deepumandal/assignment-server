@@ -13,6 +13,7 @@ interface RequstBodyI {
   querry?: string;
   minPrice?: number;
   maxPrice?: number;
+  _id?: string;
   // filter by price
 }
 
@@ -28,10 +29,12 @@ const FilterProductsToDB = async (req: Request, res: Response) => {
       querry,
       maxPrice,
       minPrice,
+      _id,
     }: RequstBodyI = req.body;
 
     const query: any = {};
 
+    if (_id) query._id = _id;
     if (category) query.category = category;
     if (subcategory) query.subcategory = subcategory;
     if (brand) query.brand = brand;

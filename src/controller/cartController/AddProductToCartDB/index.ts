@@ -1,55 +1,119 @@
 import { Request, Response } from "express";
 import { ServerResponse } from "../../../utils/ResponseSchema";
 import cartModel, { CartFields } from "../../../modals/cartModal";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 interface RequestBody {
   productId: string;
   productCount: number;
   productTotal: number;
+  userId: string;
 }
 
 const AddProductToCartDB = async (req: Request, res: Response) => {
   try {
-    const { productId, productCount, productTotal }: RequestBody = req.body;
-
+    const { productId, productCount, productTotal, userId }: RequestBody =
+      req.body;
 
     const isValidParameters = ValidateCart({
       productId,
       productCount,
       productTotal,
+      userId,
     });
 
     if (isValidParameters) {
       let responseData: CartFields | null = null;
-      const existingCartEntry = await cartModel.findOne({ productId });
+      const userCartExist = await cartModel.findOne({ userId });
 
-      if (productCount <= 0) {
-        if (existingCartEntry) {
-          await existingCartEntry.deleteOne();
+      if (userCartExist) {
+        const isExistingProduct = await cartModel.findOne({
+          userId,
+          userData: {
+            $elemMatch: { productId },
+          },
+        });
+
+        if (isExistingProduct) {
+          if (productCount <= 0) {
+            await cartModel.findOneAndUpdate(
+              {
+                userId,
+                "userData.productId": productId,
+              },
+              {
+                $pull: {
+                  userData: { productId },
+                },
+              },
+              {
+                new: true,
+              }
+            );
+          } else {
+            await cartModel.findOneAndUpdate(
+              {
+                userId,
+                "userData.productId": productId,
+              },
+              {
+                $set: {
+                  "userData.$": {
+                    productId,
+                    productCount,
+                    productTotal,
+                  },
+                },
+              },
+              {
+                new: true,
+              }
+            );
+          }
+        } else {
+          console.log(isExistingProduct);
+
+          await cartModel.findOneAndUpdate(
+            {
+              userId,
+            },
+            {
+              $push: {
+                userData: {
+                  productId,
+                  productCount,
+                  productTotal,
+                },
+              },
+            },
+            {
+              upsert: true,
+              new: true,
+            }
+          );
         }
       } else {
-        if (existingCartEntry) {
-          existingCartEntry.productCount = productCount;
-          existingCartEntry.productTotal = productTotal;
-          responseData = await existingCartEntry.save();
-        } else {
-          const newCartEntry = new cartModel({
-            productId,
-            productCount,
-            productTotal,
-          });
-          responseData = await newCartEntry.save();
-        }
+        const newCartEntry = new cartModel({
+          userId,
+          userData: [
+            {
+              productId,
+              productCount,
+              productTotal,
+            },
+          ],
+        });
+        responseData = await newCartEntry.save();
       }
 
-      const allCartEntries = await cartModel.find();
+      const allCartEntries = await cartModel.findOne({userId});
 
       return ServerResponse.sendResponse({
         message: "Added to cart successfully",
         res,
         status: true,
         statusCode: 200,
-        data: allCartEntries,
+        data: allCartEntries?.userData,
       });
     } else {
       return ServerResponse.sendResponse({

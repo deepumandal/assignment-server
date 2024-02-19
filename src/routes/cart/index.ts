@@ -9,6 +9,6 @@ cartRoute.get("/", (req: Request, res: Response) => {
 });
 
 cartRoute.post("/add", AddProductToCartDB);
-cartRoute.get("/clear", ClearCartDataToDB);
+cartRoute.post("/clear", ClearCartDataToDB);
 
-cartRoute.get("/getCartData", GetCartDataToCartDB);
+cartRoute.post("/getCartData", GetCartDataToCartDB);
