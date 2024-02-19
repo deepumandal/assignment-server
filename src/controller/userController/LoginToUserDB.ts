@@ -27,7 +27,6 @@ const LoginToUserDB = async (req: Request, res: Response) => {
       const UserDetails = await userModel.find({
         email,
       });
-      console.log("UserDetails", UserDetails);
 
       if (!UserDetails.length) {
         return ServerResponse.sendResponse({

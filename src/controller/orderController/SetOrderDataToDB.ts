@@ -19,13 +19,9 @@ const SetOrderDataToDB = async (req: Request, res: Response) => {
       const isValidRequestBody: boolean = validateRequestBody(requestOrders);
 
       if (isValidRequestBody) {
-        // const orderData = await orderModal.insertMany(requestBody);
-
         const isNotFirstTimeOrder = await orderModal.findOne({ userId });
 
         if (isNotFirstTimeOrder) {
-          // console.log("requestBody", isNotFirstTimeOrder);
-
           let i = 0;
           while (i < requestOrders.length) {
             await orderModal.findOneAndUpdate(
