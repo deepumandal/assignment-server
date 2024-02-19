@@ -36,7 +36,6 @@ const ClearCartDataToDB = async (req: Request, res: Response) => {
       data: responseData?.userData,
     });
   } catch (error) {
-    console.log(error);
     return ServerResponse.InternalServerError(res);
   }
 };

@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { ServerResponse } from "../../../utils/ResponseSchema";
 import cartModel, { CartFields } from "../../../modals/cartModal";
-import jwt, { JwtPayload } from "jsonwebtoken";
 
 interface RequestBody {
   productId: string;
@@ -71,7 +70,6 @@ const AddProductToCartDB = async (req: Request, res: Response) => {
             );
           }
         } else {
-          console.log(isExistingProduct);
 
           await cartModel.findOneAndUpdate(
             {
@@ -124,7 +122,6 @@ const AddProductToCartDB = async (req: Request, res: Response) => {
       });
     }
   } catch (error) {
-    console.log(error);
     return ServerResponse.InternalServerError(res);
   }
 };

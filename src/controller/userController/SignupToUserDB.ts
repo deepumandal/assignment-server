@@ -6,9 +6,9 @@ import {
   passwordValidationRegex,
 } from "../../utils/constants";
 import userModel from "../../modals/user";
-
 import jwt from "jsonwebtoken";
 import { EnvProvider } from "../../utils/EnvProvider";
+
 interface requestBodyI {
   email: string;
   password: string;
@@ -101,7 +101,6 @@ function RequestBodyFeildValidation({
     return true;
   }
 
-  // validate email is actually an email or not
   if (!emailValidationRegex.test(email)) {
     ServerResponse.sendResponse({
       message: `Invalid email | valid example abc@gmail.com `,

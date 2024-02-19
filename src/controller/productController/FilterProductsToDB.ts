@@ -14,7 +14,6 @@ interface RequstBodyI {
   minPrice?: number;
   maxPrice?: number;
   _id?: string;
-  // filter by price
 }
 
 const FilterProductsToDB = async (req: Request, res: Response) => {
