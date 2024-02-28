@@ -28,7 +28,6 @@ app.use("/user", userRoute);
 app.use("/cart", tokenVarification, cartRoute);
 app.use("/order", tokenVarification, orderRoute);
 
-
 // server listening
 console.log("Server starting...");
 connectToDB().then(() => {
