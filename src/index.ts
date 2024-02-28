@@ -24,6 +24,7 @@ app.get("/", (req: Request, res: Response) => {
 
 // routes
 app.use("/products", productsRoute);
+
 app.use("/user", userRoute);
 app.use("/cart", tokenVarification, cartRoute);
 app.use("/order", tokenVarification, orderRoute);
