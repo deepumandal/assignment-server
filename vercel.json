@@ -1,17 +1,1 @@
-{
-    "version": 2,
-    "functions": {
-      "api": {
-        "runtime": "nodejs14.x",
-        "memory": 512,
-        "maxDuration": 30
-      }
-    },
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "/src/index.ts"
-      }
-    ]
-  }
-  
+{ "version": 2, "rewrites": [{ "source": "/(.*)", "destination": "/api" }] }

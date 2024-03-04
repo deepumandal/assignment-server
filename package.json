@@ -4,8 +4,8 @@
   "description": "webelight assignment",
   "main": "index.ts",
   "scripts": {
-    "start": "nodemon src/index.ts",
-    "dev": "nodemon src/index.ts"
+    "start": "nodemon api/index.ts",
+    "dev": "nodemon api/index.ts"
   },
   "keywords": [
     "assignment"
